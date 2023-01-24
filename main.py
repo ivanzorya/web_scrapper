@@ -1,11 +1,15 @@
 import json
 import logging
+import ssl
 import string
 import urllib.request
 
 from bs4 import BeautifulSoup
 
 from constants import BASE_URL, PRIVACY_POLICY, STOP_WORDS, URL
+
+ssl._create_default_https_context = ssl._create_unverified_context
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(level="DEBUG")
@@ -96,7 +100,7 @@ def main():
 
         index_soup = get_page_soup(URL)
         external_resources = get_list_all_external_resources(index_soup)
-        
+
         privacy_policy_link = identifies_page_link(index_soup, PRIVACY_POLICY)
         privacy_policy_soup = get_page_soup(URL + privacy_policy_link)
         privacy_policy_page_content = get_page_content(privacy_policy_soup)
